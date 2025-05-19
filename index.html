@@ -3,18 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akash Tharu - Portfolio</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Akash Tharu - Web Developer & Cybersecurity Expert</title>
+    <meta name="title" content="Akash Tharu - Web Developer & Cybersecurity Expert">
+    <meta name="description" content="Professional web developer and cybersecurity expert specializing in creating secure and beautiful digital experiences. Offering services in web development, UI/UX design, and cybersecurity solutions.">
+    <meta name="keywords" content="web developer, cybersecurity expert, UI/UX designer, digital solutions, web development, Nepal">
+    <meta name="author" content="Akash Tharu">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-website-url.com/">
+    <meta property="og:title" content="Akash Tharu - Web Developer & Cybersecurity Expert">
+    <meta property="og:description" content="Professional web developer and cybersecurity expert specializing in creating secure and beautiful digital experiences.">
+    <meta property="og:image" content="https://your-website-url.com/keylor.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-website-url.com/">
+    <meta property="twitter:title" content="Akash Tharu - Web Developer & Cybersecurity Expert">
+    <meta property="twitter:description" content="Professional web developer and cybersecurity expert specializing in creating secure and beautiful digital experiences.">
+    <meta property="twitter:image" content="https://your-website-url.com/keylor.png">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="keylor.png">
+    <link rel="apple-touch-icon" href="keylor.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://your-website-url.com/">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="keylor.png" as="image">
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
-        <a href="#" class="logo">
-            <img src="keylor.png" alt="Your Name">
+    <nav role="navigation" aria-label="Main navigation">
+        <a href="#" class="logo" aria-label="Home">
+            <img src="keylor.png" alt="Akash Tharu Logo" width="40" height="40">
         </a>
-        <div class="menu-btn">
+        <div class="menu-btn" aria-label="Toggle menu" role="button" tabindex="0">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
@@ -29,7 +63,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <section id="home" class="hero" aria-label="Introduction">
         <div class="hero-content">
             <div class="hero-left">
                 <h1>Hi, I'm <span class="highlight">Akash Tharu</span></h1>
@@ -41,44 +75,44 @@
                     design, and cybersecurity to create secure and beautiful digital experiences.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#portfolio" class="primary-btn">View My Work</a>
-                    <a href="#contact" class="secondary-btn">Contact Me</a>
+                    <a href="#portfolio" class="primary-btn" aria-label="View my work">View My Work</a>
+                    <a href="#contact" class="secondary-btn" aria-label="Contact me">Contact Me</a>
                 </div>
-                <div class="social-links">
-                    <a href="https://github.com/Keylorakash" target="_blank" rel="noopener noreferrer">
+                <div class="social-links" aria-label="Social media links">
+                    <a href="https://github.com/Keylorakash" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/akash-tharu-2455a633b/" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.linkedin.com/in/akash-tharu-2455a633b/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter Profile">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="https://www.facebook.com/keylor.aakash.5?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.facebook.com/keylor.aakash.5?mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer" aria-label="Facebook Profile">
                         <i class="fab fa-facebook"></i>
                     </a>
                 </div>
             </div>
             <div class="hero-right">
                 <div class="profile-image">
-                    <img src="keylor.png" alt="Your Name">
+                    <img src="keylor.png" alt="Akash Tharu Profile Picture" width="300" height="300">
                 </div>
                 <div class="experience-card"> 
                     <span class="exp-number">4+</span>
                     <span class="exp-text">Years of Experience</span>
                 </div> 
-                <div class="tech-stack">
-                    <i class="fab fa-react"></i>
-                    <i class="fab fa-node"></i>
-                    <i class="fab fa-js"></i>
-                    <i class="fab fa-python"></i>
+                <div class="tech-stack" aria-label="Technology stack">
+                    <i class="fab fa-react" aria-label="React"></i>
+                    <i class="fab fa-node" aria-label="Node.js"></i>
+                    <i class="fab fa-js" aria-label="JavaScript"></i>
+                    <i class="fab fa-python" aria-label="Python"></i>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section id="about" class="about" aria-label="About me">
         <h2>About Me</h2>
         <div class="about-content">
             <div class="about-text">
@@ -90,7 +124,7 @@
                     <div class="skill">
                         Web Development
                         <div class="skill-progress">
-                            <div class="skill-progress-bar" style="--progress: 95%"></div>
+                            <div class="skill-progress-bar" style="--progress: 95%" aria-label="Web Development skill level: 95%"></div>
                         </div>
                     </div>
                     <div class="skill">
@@ -129,7 +163,7 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="services">
+    <section id="services" class="services" aria-label="My services">
         <h2>My Services</h2>
         <div class="services-grid">
             <div class="service-card">
@@ -171,13 +205,10 @@
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio">
+    <section id="portfolio" class="portfolio" aria-label="My projects">
         <h2>My Projects</h2>
-        <div class="portfolio-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="web">Web</button>
-            <button class="filter-btn" data-filter="app">App</button>
-            <button class="filter-btn" data-filter="marketing">Marketing</button>
+        <div class="portfolio-filters" role="tablist">
+            <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
         </div>
         <div class="portfolio-grid">
             <div class="portfolio-box" data-category="app">
@@ -187,13 +218,13 @@
                     </div>
                     <h3>BhashaPul</h3>
                     <div class="tech-badges">
-                        <span>Kotlin</span>
+                        <span>Flutter</span>
                         <span>Firebase</span>
-                        <span>MyMemory Translation API</span>
+                        <span>Google Translate API</span>
                     </div>
                     <div class="project-links">
                         <a href="https://play.google.com/store/apps/details?id=studio.cosome.bhashapul" class="live-link">Play Store</a>
-                        <!-- <a href="#" class="code-link">Code</a> -->
+                        <a href="#" class="code-link">Code</a>
                     </div>
                 </div>
             </div>
@@ -211,7 +242,7 @@
                     </div>
                     <div class="project-links">
                         <a href="https://play.google.com/store/apps/details?id=studio.cosome.lovelines" class="live-link">Play Store</a>
-                        <!-- <a href="#" class="code-link">Code</a> -->
+                        <a href="#" class="code-link">Code</a>
                     </div>
                 </div>
             </div>
@@ -219,17 +250,17 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact" aria-label="Contact information">
         <h2>Get In Touch</h2>
         <div class="contact-container">
             <div class="contact-info">
                 <h3>Contact Information</h3>
                 <div class="info-items">
                     <div class="info-item">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
                         <div class="info-content">
                             <h4>Email</h4>
-                            <p>aakashtharu77c@gmail.com</p>
+                            <p><a href="mailto:aakashtharu77c@gmail.com">aakashtharu77c@gmail.com</a></p>
                         </div>
                     </div>
                     <div class="info-item">
@@ -269,19 +300,23 @@
                     </a>
                 </div>
             </div>
-            <form id="contact-form">
+            <form id="contact-form" aria-label="Contact form">
                 <h3>Send Message</h3>
                 <div class="form-group">
-                    <input type="text" id="name" placeholder="Your Name" required>
+                    <label for="name" class="visually-hidden">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Your Email" required>
+                    <label for="email" class="visually-hidden">Your Email</label>
+                    <input type="email" id="email" name="email" placeholder="Your Email" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="subject" placeholder="Subject" required>
+                    <label for="subject" class="visually-hidden">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Subject" required>
                 </div>
                 <div class="form-group">
-                    <textarea id="message" placeholder="Your Message" required></textarea>
+                    <label for="message" class="visually-hidden">Your Message</label>
+                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
                 </div>
                 <button type="submit" class="submit-btn">Send Message</button>
             </form>
@@ -289,13 +324,35 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="footer-content">
             <div class="copyright">
-                <span>&copy; 2024 Akash Tharu . All Rights Reserved.</span>
+                <span>&copy; 2024 Akash Tharu. All Rights Reserved.</span>
             </div>
         </div>
     </footer>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Akash Tharu",
+        "url": "https://your-website-url.com",
+        "image": "https://your-website-url.com/keylor.png",
+        "sameAs": [
+            "https://github.com/Keylorakash",
+            "https://www.linkedin.com/in/akash-tharu-2455a633b/",
+            "https://www.facebook.com/keylor.aakash.5"
+        ],
+        "jobTitle": "Web Developer & Cybersecurity Expert",
+        "worksFor": {
+            "@type": "Organization",
+            "name": "Freelance"
+        },
+        "description": "Professional web developer and cybersecurity expert specializing in creating secure and beautiful digital experiences."
+    }
+    </script>
 
     <script src="script.js"></script>
 </body>

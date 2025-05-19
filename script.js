@@ -77,31 +77,42 @@ function type() {
 // Start typing animation
 type();
 
-// Mobile Menu Toggle
+// Mobile Menu Functionality
 const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
-const nav = document.querySelector('nav');
-const navItems = document.querySelectorAll('.nav-links li a');
+const body = document.body;
 
 menuBtn.addEventListener('click', () => {
     menuBtn.classList.toggle('active');
     navLinks.classList.toggle('active');
+    body.classList.toggle('menu-open');
 });
 
-// Close mobile menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (!menuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+// Close menu when clicking a link
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
         menuBtn.classList.remove('active');
         navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
+    });
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+        menuBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
     }
 });
 
-// Close mobile menu when clicking a link
-navItems.forEach(item => {
-    item.addEventListener('click', () => {
+// Handle window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
         menuBtn.classList.remove('active');
         navLinks.classList.remove('active');
-    });
+        body.classList.remove('menu-open');
+    }
 });
 
 // Smooth scrolling for navigation links
@@ -280,4 +291,176 @@ document.querySelectorAll('#contact-form input, #contact-form textarea').forEach
             field.parentElement.classList.remove('focused');
         }
     });
+});
+
+// Enhanced Responsive Navigation
+const handleResponsiveNav = () => {
+    const nav = document.querySelector('nav');
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const body = document.body;
+    let lastScroll = 0;
+
+    // Handle scroll events
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+
+        // Add scrolled class for background change
+        if (currentScroll > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+
+        // Hide/show nav on scroll
+        if (currentScroll > lastScroll && currentScroll > 100) {
+            nav.style.transform = 'translateY(-100%)';
+        } else {
+            nav.style.transform = 'translateY(0)';
+        }
+        lastScroll = currentScroll;
+    });
+
+    // Enhanced mobile menu functionality
+    menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        body.classList.toggle('menu-open');
+    });
+
+    // Close menu on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuBtn.classList.remove('active');
+            navLinks.classList.remove('active');
+            body.classList.remove('menu-open');
+        });
+    });
+
+    // Close menu on outside click
+    document.addEventListener('click', (e) => {
+        if (!menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+            menuBtn.classList.remove('active');
+            navLinks.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+    });
+
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 768) {
+                menuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
+        }, 250);
+    });
+};
+
+// Enhanced Responsive Images
+const handleResponsiveImages = () => {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        // Add loading="lazy" for better performance
+        img.loading = 'lazy';
+        
+        // Add error handling
+        img.onerror = function() {
+            this.src = 'placeholder.png';
+            this.alt = 'Image failed to load';
+        };
+    });
+};
+
+// Enhanced Touch Device Support
+const handleTouchDevices = () => {
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+        
+        // Remove hover effects on touch devices
+        const elements = document.querySelectorAll('.service-card, .portfolio-box, .skill');
+        elements.forEach(element => {
+            element.style.transform = 'none';
+        });
+    }
+};
+
+// Enhanced Scroll Animations
+const handleScrollAnimations = () => {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                // Unobserve after animation
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections and animated elements
+    document.querySelectorAll('section, .animate-on-scroll').forEach((element) => {
+        observer.observe(element);
+    });
+};
+
+// Enhanced Form Handling
+const handleResponsiveForm = () => {
+    const form = document.getElementById('contact-form');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            
+            // Validate form
+            let isValid = true;
+            form.querySelectorAll('input, textarea').forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+
+            if (isValid) {
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                // Simulate form submission
+                setTimeout(() => {
+                    // Reset form
+                    form.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Show success message
+                    alert('Thank you for your message! I will get back to you soon.');
+                }, 1500);
+            }
+        });
+    }
+};
+
+// Initialize all responsive features
+document.addEventListener('DOMContentLoaded', () => {
+    handleResponsiveNav();
+    handleResponsiveImages();
+    handleTouchDevices();
+    handleScrollAnimations();
+    handleResponsiveForm();
 });

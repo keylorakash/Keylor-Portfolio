@@ -82,29 +82,55 @@ const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
 const body = document.body;
 
+function closeMenu() {
+    menuBtn.classList.remove('active');
+    navLinks.classList.remove('active');
+    body.classList.remove('menu-open');
+}
+
+function openMenu() {
+    menuBtn.classList.add('active');
+    navLinks.classList.add('active');
+    body.classList.add('menu-open');
+}
+
 menuBtn.addEventListener('click', () => {
-    menuBtn.classList.toggle('active');
-    navLinks.classList.toggle('active');
-    body.classList.toggle('menu-open');
+    if (navLinks.classList.contains('active')) {
+        closeMenu();
+    } else {
+        openMenu();
+    }
 });
 
+// Touch support for Android
+menuBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (navLinks.classList.contains('active')) {
+        closeMenu();
+    } else {
+        openMenu();
+    }
+}, { passive: false });
+
 // Close menu when clicking a link
-document.querySelectorAll('.nav-links a').forEach(link => {
+const navLinkEls = document.querySelectorAll('.nav-links a');
+navLinkEls.forEach(link => {
     link.addEventListener('click', () => {
-        menuBtn.classList.remove('active');
-        navLinks.classList.remove('active');
-        body.classList.remove('menu-open');
+        closeMenu();
     });
+    link.addEventListener('touchstart', () => {
+        closeMenu();
+    }, { passive: true });
 });
 
 // Close menu when clicking outside
-document.addEventListener('click', (e) => {
+function handleOutsideClick(e) {
     if (!menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
-        menuBtn.classList.remove('active');
-        navLinks.classList.remove('active');
-        body.classList.remove('menu-open');
+        closeMenu();
     }
-});
+}
+document.addEventListener('click', handleOutsideClick);
+document.addEventListener('touchstart', handleOutsideClick, { passive: true });
 
 // Handle window resize
 window.addEventListener('resize', () => {

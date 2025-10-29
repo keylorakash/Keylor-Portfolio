@@ -34,24 +34,28 @@
     <link rel="canonical" href="https://your-website-url.com/">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
     <!-- Preload Critical Resources -->
-    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="style.css" as="style">
+    
+    <!-- Cloudflare Turnstile (bot protection) -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
     <!-- Navigation -->
     <nav role="navigation" aria-label="Main navigation">
-        <a href="#" class="logo" aria-label="Home">
+        <a href="#home" class="logo" aria-label="Home">
             <img src="keylor.png" alt="Akash Tharu Logo" width="40" height="40" loading="lazy">
         </a>
-        <div class="menu-btn" aria-label="Toggle menu" role="button" tabindex="0">
+        <div class="menu-btn" aria-label="Toggle menu" role="button" tabindex="0" aria-controls="site-navigation" aria-expanded="false">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
         </div>
-        <ul class="nav-links">
+        <ul class="nav-links" id="site-navigation">
             <li><a href="#home" data-text="Home">Home</a></li>
             <li><a href="#about" data-text="About">About</a></li>
             <li><a href="#services" data-text="Services">Services</a></li>
@@ -93,7 +97,7 @@
             </div>
             <div class="hero-right">
                 <div class="profile-image">
-                    <img src="keylor.png" alt="Akash Tharu Profile Picture" width="300" height="300" loading="lazy">
+                    <img src="keylor.png" alt="Akash Tharu Profile Picture" width="300" height="300" loading="eager" fetchpriority="high" decoding="async" data-priority="high">
                 </div>
             </div>
         </div>
@@ -199,7 +203,7 @@
             <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
         </div>
         <div class="portfolio-grid">
-            <div class="portfolio-box animate floating" data-category="app">
+            <div class="portfolio-box floating" data-category="app">
                 <div class="portfolio-content">
                     <div class="project-icon">
                         <i class="fas fa-language"></i>
@@ -217,7 +221,7 @@
                 </div>
             </div>
 
-            <div class="portfolio-box animate floating" data-category="app">
+            <div class="portfolio-box floating" data-category="app">
                 <div class="portfolio-content">
                     <div class="project-icon">
                         <i class="fas fa-heart"></i>
@@ -234,6 +238,10 @@
                     </div>
                 </div>
             </div>
+
+            
+
+            
         </div>
     </section>
 
@@ -306,6 +314,8 @@
                     <label for="message" class="visually-hidden">Your Message</label>
                     <textarea id="message" name="message" placeholder="Your Message" required></textarea>
                 </div>
+                <!-- Cloudflare Turnstile widget; replace data-sitekey with your site key -->
+                <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="auto"></div>
                 <button type="submit" class="submit-btn">Send Message</button>
             </form>
         </div>

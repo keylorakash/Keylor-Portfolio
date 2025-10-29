@@ -86,12 +86,20 @@ function closeMenu() {
     menuBtn.classList.remove('active');
     navLinks.classList.remove('active');
     body.classList.remove('menu-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    // Fallback to ensure menu hides even if CSS conflicts
+    navLinks.style.right = '';
+    navLinks.style.display = '';
 }
 
 function openMenu() {
     menuBtn.classList.add('active');
     navLinks.classList.add('active');
     body.classList.add('menu-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    // Fallback to ensure menu shows on all devices
+    navLinks.style.display = 'flex';
+    navLinks.style.right = '0';
 }
 
 menuBtn.addEventListener('click', () => {
@@ -99,6 +107,18 @@ menuBtn.addEventListener('click', () => {
         closeMenu();
     } else {
         openMenu();
+    }
+});
+
+// Keyboard support for menu button
+menuBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (navLinks.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
     }
 });
 
@@ -138,6 +158,8 @@ window.addEventListener('resize', () => {
         menuBtn.classList.remove('active');
         navLinks.classList.remove('active');
         body.classList.remove('menu-open');
+        navLinks.style.right = '';
+        navLinks.style.display = '';
     }
 });
 
@@ -189,35 +211,27 @@ filterButtons.forEach(button => {
     });
 });
 
-// Navbar scroll effect
-let lastScroll = 0;
+// Active link highlighting on scroll
+const sections = document.querySelectorAll('section[id]');
+const navAnchors = document.querySelectorAll('.nav-links a');
 
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (!link) return;
+        if (entry.isIntersecting) {
+            navAnchors.forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
+        } else if (link.classList.contains('active')) {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        }
+    });
+}, { root: null, threshold: 0.6 });
 
-    if (currentScroll <= 0) {
-        nav.classList.remove('scroll-up');
-        return;
-    }
-
-    if (currentScroll > lastScroll && !nav.classList.contains('scroll-down')) {
-        // Scroll Down
-        nav.classList.remove('scroll-up');
-        nav.classList.add('scroll-down');
-    } else if (currentScroll < lastScroll && nav.classList.contains('scroll-down')) {
-        // Scroll Up
-        nav.classList.remove('scroll-down');
-        nav.classList.add('scroll-up');
-    }
-    lastScroll = currentScroll;
-
-    // Add scrolled class when scrolling down
-    if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
-    } else {
-        nav.classList.remove('scrolled');
-    }
-});
+sections.forEach(sec => sectionObserver.observe(sec));
 
 // Form submission
 const contactForm = document.getElementById('contact-form');
@@ -241,26 +255,7 @@ contactForm.addEventListener('submit', (e) => {
     contactForm.reset();
 });
 
-// Add animation on scroll
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.animate');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementBottom = element.getBoundingClientRect().bottom;
-        
-        if (elementTop < window.innerHeight && elementBottom > 0) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-};
-
-// Initial animation check
-animateOnScroll();
-
-// Add scroll event listener
-window.addEventListener('scroll', animateOnScroll);
+// Removed manual scroll animation handler in favor of IntersectionObserver below
 
 // 3D tilt effect for cards
 document.querySelectorAll('.service-card, .portfolio-box, .skill').forEach(card => {
@@ -327,7 +322,7 @@ const handleResponsiveNav = () => {
     const body = document.body;
     let lastScroll = 0;
 
-    // Handle scroll events
+    // Handle scroll events (passive)
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
 
@@ -345,7 +340,7 @@ const handleResponsiveNav = () => {
             nav.style.transform = 'translateY(0)';
         }
         lastScroll = currentScroll;
-    });
+    }, { passive: true });
 
     // Enhanced mobile menu functionality
     menuBtn.addEventListener('click', () => {
@@ -390,9 +385,10 @@ const handleResponsiveNav = () => {
 const handleResponsiveImages = () => {
     const images = document.querySelectorAll('img');
     images.forEach(img => {
-        // Add loading="lazy" for better performance
-        img.loading = 'lazy';
-        
+        // Only set lazy if not explicitly prioritized
+        if (!img.hasAttribute('loading')) {
+            img.loading = 'lazy';
+        }
         // Add error handling
         img.onerror = function() {
             this.src = 'placeholder.png';

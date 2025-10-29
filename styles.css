@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: all 0.3s ease-in-out;
 }
 
 html {
@@ -151,14 +150,32 @@ nav {
     transform-origin: left;
 }
 
+/* Active link state */
+.nav-links li a.active {
+    color: #64ffda;
+}
+.nav-links li a.active::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
 /* Mobile Menu Button */
 .menu-btn {
     display: none;
     cursor: pointer;
     padding: 10px;
     z-index: 1001;
-    background: transparent;
-    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.25);
+    position: relative;
+    min-width: 44px; /* iOS hit target */
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
 }
 
 .menu-btn .bar {
@@ -167,6 +184,28 @@ nav {
     background: #64ffda;
     margin: 5px 0;
     transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+/* iPhone-style glass highlight */
+.menu-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 22px rgba(0, 0, 0, 0.28);
+}
+
+.menu-btn:active,
+.menu-btn.active {
+    transform: translateY(0.5px) scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 6px 14px rgba(0, 0, 0, 0.24);
 }
 
 /* Scroll Effect */
@@ -182,7 +221,7 @@ nav.scrolled {
         background: rgba(10, 25, 47, 0.98);
     }
     .menu-btn {
-        display: block;
+        display: flex;
         z-index: 1100;
     }
     .nav-links {
@@ -202,6 +241,7 @@ nav.scrolled {
     }
     .nav-links.active {
         right: 0;
+        display: flex !important;
     }
     .nav-links li {
         opacity: 1;
@@ -442,14 +482,17 @@ nav.scrolled {
     min-width: 150px;
     position: relative;
     overflow: hidden;
-    animation: rgbButton 5s infinite;
+    /* iPhone glass effect base */
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.25);
+    animation: none;
 }
 
 .primary-btn {
-    background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
-    background-size: 200% 200%;
-    color: #fff;
-    border: none;
+    color: #e6f1ff;
+    border: 1px solid rgba(100, 255, 218, 0.35);
+    background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
 }
 
 @keyframes rgbButton {
@@ -465,10 +508,33 @@ nav.scrolled {
 }
 
 .secondary-btn {
-    background: transparent;
     color: #64ffda;
-    border: 2px solid #64ffda;
-    animation: rgbBorder 5s infinite;
+    border: 1px solid rgba(100, 255, 218, 0.45);
+    background: rgba(100, 255, 218, 0.08);
+    animation: none;
+}
+
+/* glossy highlight overlay */
+.primary-btn::after,
+.secondary-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 14px 28px rgba(0, 0, 0, 0.28);
+}
+
+.primary-btn:active,
+.secondary-btn:active {
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.24);
 }
 
 @keyframes rgbBorder {
@@ -499,7 +565,6 @@ nav.scrolled {
     margin: 0 auto;
     position: relative;
     box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
-    animation: rgbBorder 5s infinite;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -518,21 +583,9 @@ nav.scrolled {
 }
 
 /* Add a glowing effect around the image */
-.profile-image::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, 
-        rgba(255, 0, 0, 0.2),
-        rgba(0, 255, 0, 0.2),
-        rgba(0, 0, 255, 0.2));
-    animation: rgbGlow 5s infinite;
-    z-index: -1;
-}
+/* Remove RGB ring/glow around hero photo */
+.profile-image { animation: none; }
+.profile-image::after { content: none; }
 
 @keyframes rgbGlow {
     0% {
@@ -953,27 +1006,49 @@ nav.scrolled {
 
 .service-card {
     position: relative;
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
     padding: 40px 30px;
     border-radius: 20px;
     text-align: center;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     overflow: hidden;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced iPhone glass effect for the 3rd service card only */
+.services-grid .service-card:nth-child(3) {
+    border: 1px solid rgba(100, 255, 218, 0.45);
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.10) 100%);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 14px 28px rgba(0, 0, 0, 0.28);
+    position: relative;
+}
+
+.services-grid .service-card:nth-child(3)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.10) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.services-grid .service-card:nth-child(3):hover {
+    transform: translateY(-10px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 18px 34px rgba(0, 0, 0, 0.32);
 }
 
 .service-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, 
-        rgba(100, 255, 218, 0.1),
-        rgba(0, 161, 255, 0.1));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
 }
 
 .service-card:hover {
@@ -1083,22 +1158,35 @@ nav.scrolled {
 
 .filter-btn {
     padding: 12px 35px;
-    border: none;
     border-radius: 25px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    color: #e6f1ff;
     cursor: pointer;
     transition: all 0.3s;
     font-size: 1rem;
     font-weight: 500;
     letter-spacing: 0.5px;
+    /* iPhone glass effect */
+    background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.filter-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
 }
 
 .filter-btn.active,
 .filter-btn:hover {
-    background: rgba(100, 255, 218, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(100, 255, 218, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 14px 28px rgba(0, 0, 0, 0.28);
 }
 
 .portfolio-grid {
@@ -1110,11 +1198,24 @@ nav.scrolled {
 }
 
 .portfolio-box {
-    background: rgba(255, 255, 255, 0.03);
+    position: relative;
+    background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
     border-radius: 15px;
     overflow: hidden;
     transition: all 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.portfolio-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
 }
 
 .portfolio-content {
@@ -1426,21 +1527,39 @@ nav.scrolled {
 .submit-btn {
     width: 100%;
     padding: 15px 30px;
-    background: linear-gradient(45deg, #64ffda, #00a1ff);
-    border: none;
     border-radius: 10px;
-    color: #0a192f;
+    color: #e6f1ff;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    /* iPhone glass effect */
+    background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
+    border: 1px solid rgba(100, 255, 218, 0.35);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.submit-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
 }
 
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 14px 28px rgba(0, 0, 0, 0.28);
 }
 
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.24);
+}
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     #contact-form {
@@ -1651,6 +1770,11 @@ section h2 {
 
     .menu-btn {
         display: block;
+    }
+
+    /* Ensure menu shows when activated */
+    .nav-links.active {
+        display: flex !important;
     }
 
     /* Hero Section */

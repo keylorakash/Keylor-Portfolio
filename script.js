@@ -1,5 +1,4 @@
 // Typing animation
-const typedTextSpan = document.querySelector('.typed-text');
 const texts = ['Web Developer', 'UI/UX Designer', 'Cybersecurity Expert'];
 let textIndex = 0;
 let charIndex = 0;
@@ -52,6 +51,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 function type() {
+    const typedTextSpan = document.querySelector('.typed-text');
+    if (!typedTextSpan) return;
+    
     const currentText = texts[textIndex];
     
     if (isDeleting) {
@@ -74,15 +76,12 @@ function type() {
     }
 }
 
-// Start typing animation
-type();
-
 // Mobile Menu Functionality
-const menuBtn = document.querySelector('.menu-btn');
-const navLinks = document.querySelector('.nav-links');
+let menuBtn, navLinks;
 const body = document.body;
 
 function closeMenu() {
+    if (!menuBtn || !navLinks) return;
     menuBtn.classList.remove('active');
     navLinks.classList.remove('active');
     body.classList.remove('menu-open');
@@ -93,6 +92,7 @@ function closeMenu() {
 }
 
 function openMenu() {
+    if (!menuBtn || !navLinks) return;
     menuBtn.classList.add('active');
     navLinks.classList.add('active');
     body.classList.add('menu-open');
@@ -102,50 +102,57 @@ function openMenu() {
     navLinks.style.right = '0';
 }
 
-menuBtn.addEventListener('click', () => {
-    if (navLinks.classList.contains('active')) {
-        closeMenu();
-    } else {
-        openMenu();
-    }
-});
+function initMenu() {
+    menuBtn = document.querySelector('.menu-btn');
+    navLinks = document.querySelector('.nav-links');
+    
+    if (!menuBtn || !navLinks) return;
+    
+    menuBtn.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
 
-// Keyboard support for menu button
-menuBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    // Keyboard support for menu button
+    menuBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (navLinks.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        }
+    });
+
+    // Touch support for Android
+    menuBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
         if (navLinks.classList.contains('active')) {
             closeMenu();
         } else {
             openMenu();
         }
-    }
-});
-
-// Touch support for Android
-menuBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if (navLinks.classList.contains('active')) {
-        closeMenu();
-    } else {
-        openMenu();
-    }
-}, { passive: false });
-
-// Close menu when clicking a link
-const navLinkEls = document.querySelectorAll('.nav-links a');
-navLinkEls.forEach(link => {
-    link.addEventListener('click', () => {
-        closeMenu();
+    }, { passive: false });
+    
+    // Close menu when clicking a link
+    const navLinkEls = document.querySelectorAll('.nav-links a');
+    navLinkEls.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+        link.addEventListener('touchstart', () => {
+            closeMenu();
+        }, { passive: true });
     });
-    link.addEventListener('touchstart', () => {
-        closeMenu();
-    }, { passive: true });
-});
+}
 
 // Close menu when clicking outside
 function handleOutsideClick(e) {
-    if (!menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+    if (menuBtn && navLinks && !menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
         closeMenu();
     }
 }
@@ -154,7 +161,7 @@ document.addEventListener('touchstart', handleOutsideClick, { passive: true });
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 768 && menuBtn && navLinks) {
         menuBtn.classList.remove('active');
         navLinks.classList.remove('active');
         body.classList.remove('menu-open');
@@ -233,27 +240,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
 
 sections.forEach(sec => sectionObserver.observe(sec));
 
-// Form submission
-const contactForm = document.getElementById('contact-form');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
-
-    // Here you would typically send the form data to a server
-    console.log('Form submitted:', { name, email, subject, message });
-
-    // Show success message
-    alert('Thank you for your message! I will get back to you soon.');
-    
-    // Reset form
-    contactForm.reset();
-});
+// Form submission - removed duplicate handler (handled in handleResponsiveForm)
 
 // Removed manual scroll animation handler in favor of IntersectionObserver below
 
@@ -317,9 +304,8 @@ document.querySelectorAll('#contact-form input, #contact-form textarea').forEach
 // Enhanced Responsive Navigation
 const handleResponsiveNav = () => {
     const nav = document.querySelector('nav');
-    const menuBtn = document.querySelector('.menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const body = document.body;
+    if (!nav) return;
+    
     let lastScroll = 0;
 
     // Handle scroll events (passive)
@@ -342,37 +328,12 @@ const handleResponsiveNav = () => {
         lastScroll = currentScroll;
     }, { passive: true });
 
-    // Enhanced mobile menu functionality
-    menuBtn.addEventListener('click', () => {
-        menuBtn.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        body.classList.toggle('menu-open');
-    });
-
-    // Close menu on link click
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            menuBtn.classList.remove('active');
-            navLinks.classList.remove('active');
-            body.classList.remove('menu-open');
-        });
-    });
-
-    // Close menu on outside click
-    document.addEventListener('click', (e) => {
-        if (!menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
-            menuBtn.classList.remove('active');
-            navLinks.classList.remove('active');
-            body.classList.remove('menu-open');
-        }
-    });
-
-    // Handle window resize
+    // Handle window resize for menu
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 768 && menuBtn && navLinks) {
                 menuBtn.classList.remove('active');
                 navLinks.classList.remove('active');
                 body.classList.remove('menu-open');
@@ -437,36 +398,58 @@ const handleScrollAnimations = () => {
 // Enhanced Form Handling
 const handleResponsiveForm = () => {
     const form = document.getElementById('contact-form');
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Get form values
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
-            
-            // Validate form
-            let isValid = true;
-            form.querySelectorAll('input, textarea').forEach(field => {
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.classList.add('error');
-                } else {
-                    field.classList.remove('error');
-                }
-            });
+    if (!form) return;
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Check Cloudflare Turnstile if present
+        const turnstileResponse = document.querySelector('input[name="cf-turnstile-response"]');
+        if (turnstileResponse && !turnstileResponse.value) {
+            alert('Please complete the security verification.');
+            return;
+        }
+        
+        // Get form values
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        // Validate form
+        let isValid = true;
+        form.querySelectorAll('input[required], textarea[required]').forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('error');
+            } else {
+                field.classList.remove('error');
+            }
+        });
 
-            if (isValid) {
-                // Show loading state
-                const submitBtn = form.querySelector('button[type="submit"]');
+        if (isValid) {
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
                 const originalText = submitBtn.textContent;
                 submitBtn.textContent = 'Sending...';
                 submitBtn.disabled = true;
 
                 // Simulate form submission
                 setTimeout(() => {
-                    // Reset form
+                    // Reset form (including Turnstile)
                     form.reset();
+                    // Reset Turnstile widget if present
+                    if (typeof turnstile !== 'undefined' && turnstile.reset) {
+                        try {
+                            turnstile.reset();
+                        } catch (e) {
+                            // Fallback: try to remove the hidden input manually
+                            const turnstileInput = document.querySelector('input[name="cf-turnstile-response"]');
+                            if (turnstileInput) {
+                                turnstileInput.remove();
+                            }
+                        }
+                    }
+                    
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
                     
@@ -474,12 +457,19 @@ const handleResponsiveForm = () => {
                     alert('Thank you for your message! I will get back to you soon.');
                 }, 1500);
             }
-        });
-    }
+        }
+    });
 };
 
 // Initialize all responsive features
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize menu functionality
+    initMenu();
+    
+    // Start typing animation
+    type();
+    
+    // Initialize other features
     handleResponsiveNav();
     handleResponsiveImages();
     handleTouchDevices();

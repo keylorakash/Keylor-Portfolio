@@ -1947,13 +1947,14 @@ section h2 {
     .portfolio-item:hover {
         transform: translateY(-5px);
     }
-
+ 
     .skill:hover {
         transform: none;
     }
-
+ 
     .animation-duration {
-        animation-duration: 0.3s ease;
+        animation-duration: 0.3s;
+        animation-timing-function: ease;
     }
 }
     
